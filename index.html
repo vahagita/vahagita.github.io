@@ -60,7 +60,7 @@ html{color-scheme:light}.bb-dialog{color:var(--ink);background:var(--paper)}.bb-
 .cmc{border:1px solid var(--line);border-radius:12px;padding:12px;margin:10px 0;background:#fff;color:var(--ink)}.cmc p{color:var(--ink);margin:6px 0}.cmr{border-top:1px solid var(--line);padding:8px 0;color:var(--ink)}.cmb{background:none;border:1px solid var(--line);border-radius:99px;padding:6px 12px;color:var(--blue);cursor:pointer;font:inherit;font-size:13px}.cmrow{display:flex;gap:8px;flex-wrap:wrap}
 .cmrow2{display:flex;gap:8px}.cmrow2 input{flex:1;min-width:0}
 .pf-hero{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#244d68,#3b6f8c 60%,#d5a84e);border-radius:22px;padding:22px;color:#fff;box-shadow:0 10px 28px rgba(28,43,55,.18)}
-.pf-av{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#fff;border:3px solid rgba(255,255,255,.8);flex:none}
+.pf-av{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#fff;border:3px solid rgba(255,255,255,.8);flex:none}.profile-upload-banner{display:flex;align-items:center;gap:10px;margin:12px 0 0;padding:10px 13px;border:1px solid #d7e3e8;border-radius:14px;background:#f0f6f8;color:#31566c;font-size:13px}.profile-upload-banner span{font-size:18px;line-height:1}.profile-upload-banner strong{color:var(--blue)}
 .pf-id{flex:1;min-width:0}.pf-id p{margin:4px 0 0;color:rgba(255,255,255,.9);font-size:14px}
 .pf-name{width:100%;background:transparent;border:0;border-bottom:2px dashed rgba(255,255,255,.6);color:#fff;font:inherit;font-size:22px;font-weight:700;padding:2px 0;-webkit-text-fill-color:#fff}.pf-name::placeholder{color:rgba(255,255,255,.75);-webkit-text-fill-color:rgba(255,255,255,.75)}
 .pf-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:12px;margin:16px 0}
@@ -215,7 +215,7 @@ html{color-scheme:light}.bb-dialog{color:var(--ink);background:var(--paper)}.bb-
 </section>
 
 <section id="profile" class="screen">
- <div class="pf-hero"><div class="pf-av" id="pfAv">ל</div><div class="pf-id"><input id="pfName" class="pf-name" maxlength="24" placeholder="איך לקרוא לך?" oninput="pfNameSave()"><p id="pfSub">הלומד/ת שלי</p></div></div>
+ <div class="pf-hero"><div class="pf-av" id="pfAv">ל</div><div class="pf-id"><input id="pfName" class="pf-name" maxlength="24" placeholder="איך לקרוא לך?" oninput="pfNameSave()"><p id="pfSub">הלומד/ת שלי</p></div></div><div class="profile-upload-banner" role="status"><span aria-hidden="true">🖼️</span><div><strong>בקרוב בפרופיל:</strong> תהיה אפשרות להוסיף תמונת פרופיל מהגלריה.</div></div>
  <div class="pf-stats"><div class="pf-st"><b id="pfDays">0</b><span>ימי לימוד</span></div><div class="pf-st"><b id="pfCur">0</b><span>רצף נוכחי</span></div><div class="pf-st"><b id="pfBest">0</b><span>הרצף הארוך ביותר</span></div><div class="pf-st"><b id="profileAnswered">0</b><span>שאלות שנענו</span></div><div class="pf-st"><b id="pfAcc">—</b><span>דיוק</span></div></div>
  <div class="pf-card"><h4>מסע הלימוד</h4><div id="pfBooks"></div></div>
  <div class="pf-card"><h4 id="pfBdH">הישגים</h4><p class="muted" id="pfNext"></p><div class="pf-badges" id="pfBadges"></div></div>
