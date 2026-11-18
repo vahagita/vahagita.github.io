@@ -177,7 +177,7 @@ html{color-scheme:light}.bb-dialog{color:var(--ink);background:var(--paper)}.bb-
 .logout-button:hover{background:rgba(0,0,0,.25)}
 .logout-button:focus-visible,.profile-access:focus-visible,.account-profile-button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 html.logout-open,body.logout-open{overflow:hidden;overscroll-behavior:none}
-.logout-dialog{width:min(372px,calc(100% - 32px));border:0;border-radius:20px;padding:0;color:var(--ink);background:transparent;box-shadow:var(--shadow)}
+.logout-dialog{width:min(372px,calc(100% - 32px));border:0;border-radius:20px;padding:0;color:var(--ink);background:transparent;box-shadow:var(--shadow)}.logout-dialog:not([open]){display:none}
 .logout-dialog[open]{animation:authDialogIn .28s cubic-bezier(.22,.8,.25,1) both}
 .logout-dialog::backdrop{background:#14243399;backdrop-filter:blur(3px)}
 .logout-card{padding:24px;background:rgba(255,254,250,.98);border:1px solid var(--line);border-radius:20px}
