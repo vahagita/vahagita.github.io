@@ -123,6 +123,27 @@ html{color-scheme:light}.bb-dialog{color:var(--ink);background:var(--paper)}.bb-
 .reading-path-current{padding:22px;border-radius:17px;background:#fff;border:1px solid #e7e3d8}.reading-path-current .mini{color:#6c8d85;font-weight:800}.reading-path-current h2{margin:8px 0;font-size:clamp(23px,6vw,31px)}.reading-path-current p{margin:0;color:#5e6e70;line-height:1.7;max-width:600px}.reading-path-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:19px}.reading-path-actions button{min-height:43px}.reading-path-message{min-height:22px;margin:14px 0 0;color:#58716b;font-size:13px}
 .reading-path-map-card{margin-top:16px;padding:20px;border:1px solid var(--line);border-radius:20px;background:#fff}.reading-path-map-card h4{margin:0 0 12px}.reading-path-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(82px,1fr));gap:9px}.reading-path-node{display:flex;align-items:center;justify-content:center;min-height:48px;border:1px solid #dbe3df;border-radius:12px;color:#425a5b;background:#fbfdfc;font:inherit;font-weight:800;cursor:pointer;transition:transform .18s ease,border-color .18s ease,background .18s ease}.reading-path-node:hover{transform:translateY(-2px);border-color:#6ea993}.reading-path-node.current{border-color:#2b8b70;background:#dff1e9;color:#1d6252;box-shadow:0 6px 13px rgba(35,126,99,.12)}.reading-path-node.done{background:#f9f0d6;border-color:#d5b96e;color:#806621}.reading-path-node:focus-visible{outline:3px solid #9fcbbd;outline-offset:2px}
 @media(max-width:600px){.reading-path-teaser{align-items:flex-start;flex-direction:column}.reading-path-teaser button{width:100%}.reading-path-progress{align-items:flex-start;flex-direction:column}.reading-path-bar{width:100%;max-width:none}.reading-path-actions button{width:100%}}
+
+/* Launch-path challenge experience */
+.planned-tile{position:relative;overflow:hidden}
+.planned-tile .feature-status{position:absolute;top:14px;inset-inline-start:14px;background:rgba(223,171,59,.15);border:1px solid rgba(223,171,59,.35);color:#926a18;border-radius:999px;padding:4px 9px;font-size:.74rem;font-weight:800}
+.planned-tile button:disabled{opacity:.62;cursor:not-allowed;filter:saturate(.55)}
+.daily-challenge-card{margin-top:18px;padding:22px;background:linear-gradient(135deg,rgba(244,235,207,.95),rgba(255,255,255,.97));border:1px solid rgba(173,132,49,.28);box-shadow:0 16px 42px rgba(75,48,16,.10)}
+.daily-challenge-card .section-head{margin:0;gap:18px}
+.daily-challenge-card h4{margin:0 0 8px;font-size:1.28rem}
+.daily-challenge-card p{margin:0;color:var(--muted)}
+.daily-challenge-meta{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+.daily-challenge-meta span{background:rgba(255,255,255,.78);border:1px solid rgba(173,132,49,.22);border-radius:12px;padding:8px 10px;font-size:.84rem;font-weight:700;color:#6e5427}
+.daily-question-card{max-width:780px;margin:0 auto}
+.daily-progress-row{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--muted);font-size:.92rem;font-weight:700;margin-bottom:9px}
+.daily-progress{height:8px;background:#eee6d7;border-radius:99px;overflow:hidden;margin-bottom:20px}
+.daily-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#c99b3e,#754a93);border-radius:inherit;transition:width .25s ease}
+.daily-reference{margin:12px 0 16px;color:var(--muted);font-size:.92rem}
+.daily-result{text-align:center;padding:34px 24px}
+.daily-result .score-orb{margin:0 auto 16px}
+.daily-note{margin-top:17px}
+@media(max-width:640px){.daily-challenge-card{padding:17px}.daily-challenge-card .section-head{align-items:flex-start}.daily-progress-row{align-items:flex-start;flex-direction:column;gap:5px}}
+
 </style>
 </head>
 <body>
@@ -222,15 +243,39 @@ html{color-scheme:light}.bb-dialog{color:var(--ink);background:var(--paper)}.bb-
 </div></section>
 
 <section id="games" class="screen">
- <div class="section-head"><div><h3>אתגרים בכתובים</h3><p>תחרות ידידותית, חיבור והנאה — בלי לבלבל בין משחק לבין מדד רוחני.</p></div><span class="pill">מצב הדגמה</span></div>
+ <div class="section-head"><div><h3>אתגרים בכתובים</h3><p>תחרות ידידותית, חיבור והנאה — בלי לבלבל בין משחק לבין מדד רוחני.</p></div><span class="pill">בדרך להשקה</span></div>
  <div class="grid">
-  <article class="tile"><div class="icon">⚔️</div><h4>קרב אחד על אחד</h4><p>שני משתתפים, אותן שאלות, זמן מוגבל וניקוד על דיוק ומהירות.</p><button class="dark" style="margin-top:14px" onclick="createRoom('אחד על אחד')">צור חדר</button></article>
-  <article class="tile"><div class="icon">👥</div><h4>חדר חברים</h4><p>מארחים משחק לקבוצה באמצעות קוד הצטרפות.</p><button class="dark" style="margin-top:14px" onclick="createRoom('חדר חברים')">צור חדר</button></article>
-  <article class="tile"><div class="icon">🌍</div><h4>כולם נגד כולם</h4><p>התמודדות פתוחה עם משתתפים אחרים לפי נושא או ספר.</p><button class="dark" style="margin-top:14px" onclick="createRoom('כולם נגד כולם')">צור חדר</button></article>
+  <article class="tile planned-tile"><span class="feature-status">בקרוב עם חשבונות</span><div class="icon">⚔️</div><h4>קרב אחד על אחד</h4><p>שני משתתפים, אותן שאלות, זמן מוגבל וניקוד על דיוק ומהירות.</p><button class="dark" style="margin-top:14px" disabled aria-disabled="true">ייפתח בהמשך</button></article>
+  <article class="tile planned-tile"><span class="feature-status">בקרוב עם חשבונות</span><div class="icon">👥</div><h4>חדר חברים</h4><p>מארחים משחק לקבוצה באמצעות קוד הצטרפות.</p><button class="dark" style="margin-top:14px" disabled aria-disabled="true">ייפתח בהמשך</button></article>
+  <article class="tile planned-tile"><span class="feature-status">בקרוב עם חשבונות</span><div class="icon">🌍</div><h4>כולם נגד כולם</h4><p>התמודדות פתוחה עם משתתפים אחרים לפי נושא או ספר.</p><button class="dark" style="margin-top:14px" disabled aria-disabled="true">ייפתח בהמשך</button></article>
  </div>
- <div class="card" style="margin-top:16px"><h4>אתגר יומי לקהילה</h4><p>חמש שאלות משותפות לכל המשתתפים, סביב פרק נבחר. אפשר להשוות תוצאות ולדון בתשובות.</p><div class="badge">רעיון מתוכנן — עדיין לא פעיל</div></div>
- <div id="roomPanel" class="card" style="display:none;margin-top:16px"></div>
- <div class="note"><b>חשוב:</b> ההתמודדויות כאן הן המחשת ממשק בלבד. קובץ HTML מקומי אינו יכול לחבר משתמשים אמיתיים בזמן אמת. חדרים, קודים, שידוך שחקנים ודירוג תחרותי משותף ידרשו שרת, חשבונות משתמשים ומסד נתונים.</div>
+ <section class="card daily-challenge-card" aria-labelledby="dailyCardTitle">
+  <div class="section-head"><div><span class="mini">☀️ שאלה אחת לכל הקהילה</span><h4 id="dailyCardTitle">אתגר היום לקהילה</h4><p id="dailyChallengeDescription">חמש שאלות קצרות שנבחרות לפי התאריך — אותו אתגר לכל מי שנכנס היום.</p></div><span class="badge" id="dailyChallengeStatus">תצוגה מקדימה</span></div>
+  <div class="daily-challenge-meta"><span>5 שאלות</span><span>התקדמות נשמרת במכשיר הזה</span><span>ללא דירוג ציבורי עדיין</span></div>
+  <button class="dark" type="button" id="dailyChallengeStart" onclick="startDailyChallenge()">פתיחת אתגר היום</button>
+ </section>
+ <div class="note daily-note"><b>מה קורה בהמשך?</b> עם חשבונות ושרת, תוצאות אתגר היום יישמרו בענן, יהיה אפשר להשוות תוצאות ולפתוח דיון בטוח סביב השאלות. ההתמודדויות החיות ייפתחו רק כשאפשר יהיה לחבר משתמשים אמיתיים באופן הוגן ובטוח.</div>
+</section>
+
+<section id="dailyChallenge" class="screen">
+ <button class="back" type="button" onclick="showScreen('games')">← חזרה לאתגרים</button>
+ <div class="section-head"><div><h3>אתגר היום</h3><p>חמש שאלות זהות לכל מי שפותח את האתר היום. קרא/י את ההפניות בספר הפיזי שלך לפני שמחליטים.</p></div><span class="pill">תצוגה מקדימה</span></div>
+ <div class="card daily-question-card" id="dailyChallengePlay">
+  <div class="daily-progress-row"><span id="dailyChallengeCounter">שאלה 1 מתוך 5</span><span id="dailyChallengeBook"></span></div>
+  <div class="daily-progress" aria-hidden="true"><i id="dailyChallengeProgress"></i></div>
+  <h2 class="question" id="dailyChallengeQuestion"></h2>
+  <p class="daily-reference" id="dailyChallengeReference"></p>
+  <div class="options" id="dailyChallengeOptions"></div>
+  <div class="feedback" id="dailyChallengeFeedback"></div>
+  <div class="actions"><button class="dark" type="button" id="dailyChallengeNext" disabled onclick="nextDailyChallengeQuestion()">בדיקה</button></div>
+ </div>
+ <div class="card daily-question-card daily-result" id="dailyChallengeResult" hidden>
+  <div class="score-orb" id="dailyChallengeScore">0/5</div>
+  <h2 id="dailyChallengeResultTitle">כל הכבוד על אתגר היום!</h2>
+  <p id="dailyChallengeResultText"></p>
+  <div class="actions" style="justify-content:center"><button class="dark" type="button" onclick="showScreen('games')">חזרה לאתגרים</button></div>
+ </div>
+ <div class="note daily-note">זהו תרגול מקומי בלבד: השאלות זהות לכולם לפי יום, אך התוצאה נשמרת רק במכשיר שלך ואינה משנה את התקדמות ספרי הלימוד. בגרסת המשתמשים התוצאה תישמר בחשבון שלך.</div>
 </section>
 
 <section id="community" class="screen">
@@ -361,9 +406,39 @@ Object.assign(EN,{
  'מחשבה':'Thought','מטרד':'Concern','וידוי':'Confession','תפילה':'Prayer','עזרה':'Help','מה על ליבך?':'What is on your heart?','📍 הפתק/ים שלי 🤍':'📍 My note(s) 🤍','פתקים בכותל':'Notes in the Wall','בועות צפות':'Floating bubbles','הנחת פתק בכותל':'Place a note in the Wall','שחרור הבועה':'Release the bubble','אנונימי/ת':'Anonymous','אני':'Me','תגובות':'replies','לחיצה ארוכה וגרירה כדי למקם את הבועה מחדש':'Long press and drag to move this bubble','↔ גררו או החליקו לצדדים כדי לראות את כל הכותל':'↔ Drag or swipe sideways to view the whole Wall','↔ גררו את הרקע לצדדים · לחיצה ארוכה גוררת בועה':'↔ Drag the background sideways · long press moves a bubble',
  'עוד לא התחלת ללמוד. הצעד הראשון מחכה בטאב הלימוד.':'You have not started studying yet. Your first step is waiting in the Study tab.','לומד/ת מאז ':'Studying since ','מתוך':'of','הישגים':'Achievements','ענית על שאלה ראשונה':'Answered your first question','צעד ראשון':'First step','עשר תשובות':'Ten answers','ענית על 10 שאלות':'Answered 10 questions','חמישים תשובות':'Fifty answers','ענית על 50 שאלות':'Answered 50 questions','בעל המאה':'Century mark','ענית על 100 שאלות':'Answered 100 questions','מעמיק בכתובים':'Deepening in Scripture','ענית על 200 שאלות':'Answered 200 questions','שוקד על הדבר':'Diligent learner','ענית על 300 שאלות':'Answered 300 questions','גיבור הדבר':'Scripture champion','ענית על 500 שאלות':'Answered 500 questions','שלושה ימים':'Three days','למדת ב־3 ימים שונים':'Studied on 3 different days','שבוע של לימוד':'A week of study','למדת ב־7 ימים שונים':'Studied on 7 different days','שבועיים בדרך':'Two weeks on the journey','למדת ב־14 ימים שונים':'Studied on 14 different days','חודש שלם':'A full month','למדת ב־30 ימים שונים':'Studied on 30 different days','חודשיים של התמדה':'Two months of consistency','למדת ב־60 ימים שונים':'Studied on 60 different days','מאה ימים':'One hundred days','למדת ב־100 ימים שונים':'Studied on 100 different days'
 });
+
+Object.assign(EN,{
+ 'אתגרים בכתובים':'Scripture challenges',
+ 'תחרות ידידותית, חיבור והנאה — בלי לבלבל בין משחק לבין מדד רוחני.':'Friendly competition, connection and enjoyment — without confusing a game with a spiritual measure.',
+ 'בדרך להשקה':'Preparing for launch',
+ 'בקרוב עם חשבונות':'Coming with accounts',
+ 'קרב אחד על אחד':'One-on-one match',
+ 'שני משתתפים, אותן שאלות, זמן מוגבל וניקוד על דיוק ומהירות.':'Two participants, the same questions, limited time, and points for accuracy and speed.',
+ 'חדר חברים':'Friends room',
+ 'מארחים משחק לקבוצה באמצעות קוד הצטרפות.':'Host a group game with a join code.',
+ 'כולם נגד כולם':'Everyone vs. everyone',
+ 'התמודדות פתוחה עם משתתפים אחרים לפי נושא או ספר.':'An open match with other participants by topic or book.',
+ 'ייפתח בהמשך':'Opens later',
+ '☀️ שאלה אחת לכל הקהילה':'☀️ One challenge for the whole community',
+ 'אתגר היום לקהילה':'Today’s community challenge',
+ 'חמש שאלות קצרות שנבחרות לפי התאריך — אותו אתגר לכל מי שנכנס היום.':'Five short questions selected by date — the same challenge for everyone who visits today.',
+ 'תצוגה מקדימה':'Preview',
+ '5 שאלות':'5 questions',
+ 'התקדמות נשמרת במכשיר הזה':'Progress is saved on this device',
+ 'ללא דירוג ציבורי עדיין':'No public ranking yet',
+ 'פתיחת אתגר היום':'Open today’s challenge',
+ 'מה קורה בהמשך?':'What happens next?',
+ 'עם חשבונות ושרת, תוצאות אתגר היום יישמרו בענן, יהיה אפשר להשוות תוצאות ולפתוח דיון בטוח סביב השאלות. ההתמודדויות החיות ייפתחו רק כשאפשר יהיה לחבר משתמשים אמיתיים באופן הוגן ובטוח.':'With accounts and a server, today’s challenge results will be saved in the cloud, users will be able to compare results, and open a safe discussion around the questions. Live matches will open only when real users can be connected fairly and safely.',
+ '← חזרה לאתגרים':'← Back to challenges',
+ 'אתגר היום':'Today’s challenge',
+ 'חמש שאלות זהות לכל מי שפותח את האתר היום. קרא/י את ההפניות בספר הפיזי שלך לפני שמחליטים.':'Five questions shared by everyone opening the site today. Read the references in your physical Bible before choosing.',
+ 'זהו תרגול מקומי בלבד: השאלות זהות לכולם לפי יום, אך התוצאה נשמרת רק במכשיר שלך ואינה משנה את התקדמות ספרי הלימוד. בגרסת המשתמשים התוצאה תישמר בחשבון שלך.':'This is local practice only: the questions are the same for everyone by day, but your result stays on this device and does not change book-study progress. In the user version, the result will be saved in your account.',
+ 'כל הכבוד על אתגר היום!':'Well done on today’s challenge!'
+});
+
 function tr(text){return siteLanguage==='en'?(DEMO_EN[text]||EN[text]||text):text}
 function translateTextNodes(root=document.body){const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(n=>{const key=n.nodeValue.trim();if(!key)return;if(n.__heText===undefined)n.__heText=n.nodeValue;const source=n.__heText.trim();n.nodeValue=siteLanguage==='en'?(EN[source]||n.__heText):n.__heText});}
-function applyLanguage(){document.documentElement.lang=siteLanguage;document.documentElement.dir=siteLanguage==='en'?'ltr':'rtl';document.body.classList.toggle('lang-en',siteLanguage==='en');document.getElementById('languageToggle').innerHTML=siteLanguage==='en'?'English <b>עב</b>':'עברית <b>EN</b>';translateTextNodes();const fields={momentAnswer:siteLanguage==='en'?'You can answer briefly, or simply carry the question with you through the day…':'אפשר לענות בקצרה, או רק לקחת את השאלה איתך להמשך היום...',pfName:siteLanguage==='en'?'What should we call you?':'איך לקרוא לך?',bbText:siteLanguage==='en'?'What is on your heart?':'מה על ליבך?'};Object.entries(fields).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.placeholder=value});[['initials','Initials','ראשי תיבות'],['🌿','Leaf','עלה'],['🕊️','Dove','יונה'],['📖','Book','ספר'],['✨','Light','אור']].forEach(a=>{const b=document.querySelector('.avatar-choice[data-avatar="'+a[0]+'"]');if(b)b.title=siteLanguage==='en'?a[1]:a[2]});renderMoment();renderProfile();renderReadingPathTeaser();if(document.getElementById('readingPath').classList.contains('active'))renderReadingPath();}
+function applyLanguage(){document.documentElement.lang=siteLanguage;document.documentElement.dir=siteLanguage==='en'?'ltr':'rtl';document.body.classList.toggle('lang-en',siteLanguage==='en');document.getElementById('languageToggle').innerHTML=siteLanguage==='en'?'English <b>עב</b>':'עברית <b>EN</b>';translateTextNodes();const fields={momentAnswer:siteLanguage==='en'?'You can answer briefly, or simply carry the question with you through the day…':'אפשר לענות בקצרה, או רק לקחת את השאלה איתך להמשך היום...',pfName:siteLanguage==='en'?'What should we call you?':'איך לקרוא לך?',bbText:siteLanguage==='en'?'What is on your heart?':'מה על ליבך?'};Object.entries(fields).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.placeholder=value});[['initials','Initials','ראשי תיבות'],['🌿','Leaf','עלה'],['🕊️','Dove','יונה'],['📖','Book','ספר'],['✨','Light','אור']].forEach(a=>{const b=document.querySelector('.avatar-choice[data-avatar="'+a[0]+'"]');if(b)b.title=siteLanguage==='en'?a[1]:a[2]});renderMoment();renderProfile();renderReadingPathTeaser();renderDailyChallengeCard();if(document.getElementById('readingPath').classList.contains('active'))renderReadingPath();if(document.getElementById('dailyChallenge').classList.contains('active'))renderDailyChallengeQuestion();}
 function toggleLanguage(){siteLanguage=siteLanguage==='he'?'en':'he';localStorage.setItem('vahagita_language',siteLanguage);applyLanguage()}
 const banks={
  john:{name:"בשורת יוחנן",qs:[
@@ -2949,7 +3024,7 @@ let momentIndex=todayMomentIndex();
 let bookKey='john',items=[],idx=0,chosen=null,correct=0,reviewed=0,activeChapter='',chapterQuizTotal=0;
 let progress=JSON.parse(localStorage.getItem('vahagitaProgress')||'{"answered":0,"correct":0,"wrong":[],"book":{},"days":[],"last":""}');if(!progress.chapterResults||typeof progress.chapterResults!=='object')progress.chapterResults={};if(!progress.celebratedBooks||typeof progress.celebratedBooks!=='object')progress.celebratedBooks={};if(!progress.unlockedAchievements||typeof progress.unlockedAchievements!=='object')progress.unlockedAchievements={};if(!progress.achievementCelebrations||typeof progress.achievementCelebrations!=='object')progress.achievementCelebrations={};
 function save(){localStorage.setItem('vahagitaProgress',JSON.stringify(progress));renderStats()}
-function showScreen(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));if(id==='profile')renderProfile();if(id==='moment')renderMoment();if(id==='home'||id==='learn')renderStats();if(id==='community')bbRender();if(id==='readingPath')renderReadingPath()}
+function showScreen(id){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.screen===id));if(id==='profile')renderProfile();if(id==='moment')renderMoment();if(id==='home'||id==='learn')renderStats();if(id==='games')renderDailyChallengeCard();if(id==='community')bbRender();if(id==='readingPath')renderReadingPath()}
 document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>showScreen(b.dataset.screen)));
 function renderMoment(){const settings=JSON.parse(localStorage.getItem('vahagitaMomentSettings')||'{"frequency":"daily","quiet":"22:00–08:00"}');document.getElementById('momentFrequency').value='daily';momentIndex=todayMomentIndex();momentLoadQuiet(settings);const item=(siteLanguage==='en'?momentQuestionsEN:momentQuestions)[momentIndex];document.getElementById('momentTitle').textContent=item.title;document.getElementById('momentBody').textContent=item.body;const ref=document.getElementById('momentReference');ref.style.display=item.reference?'block':'none';ref.textContent=item.reference||'';document.getElementById('momentAnswer').value='';document.getElementById('momentMessage').textContent='';}
 function momentLoadQuiet(s){let f='22:00',t='08:00',n=false;if(s.none||s.quiet==='none')n=true;else{const q=(s.quiet||'').split('–');if(s.from){f=s.from;t=s.to}else if(q.length===2&&q[0]&&q[1]){f=q[0];t=q[1]}}document.getElementById('momentQFrom').value=f;document.getElementById('momentQTo').value=t;document.getElementById('momentQNone').checked=n;momentQuietSummary()}
@@ -3002,6 +3077,18 @@ function nextQuestion(){if(chosen===null)return;if(idx<items.length-1){idx++;ren
 function finish(){let chapterDone=false;if(bookKey==='john'&&activeChapter&&chapterQuizTotal===items.length){const key='john:'+activeChapter,previous=chapterResult(activeChapter),best=Math.max(previous&&Number.isFinite(previous.correct)?previous.correct:0,correct);progress.chapterResults[key]={correct:best,total:chapterQuizTotal};chapterDone=true;save()}if(chapterDone&&bookKey==='john')markPathChapterComplete(activeChapter,true);const completedBook=bookCompletionInfo(bookKey),shouldCelebrate=completedBook.complete&&!progress.celebratedBooks[bookKey];showScreen('result');document.getElementById('score').textContent=correct+'/'+items.length;let pct=Math.round(correct/items.length*100),bookName=activeBanks()[bookKey].name,resultText=siteLanguage==='en'?'You answered '+pct+'% of the questions correctly in '+bookName+'.':'ענית נכון על '+pct+'% מהשאלות ב'+bookName+'.';if(siteLanguage!=='en')resultText+=' '+(pct===100?'שליטה טובה בשאלות האלה.':pct>=70?'יש בסיס, אבל כדאי לחזור על הטעויות.':'אל תסתפק בציון — קרא שוב את ההפניות וחזור לספר.');if(chapterDone&&siteLanguage!=='en')resultText+=' הפרק סומן כהושלם; התוצאה הטובה ביותר שלך: '+progress.chapterResults['john:'+activeChapter].correct+'/'+chapterQuizTotal+'.';document.getElementById('resultText').textContent=resultText;let count=progress.wrong.filter(x=>x.startsWith(bookKey+':')).length;document.getElementById('reviewText').textContent=count?(siteLanguage==='en'?count+' questions from this book are waiting for review.':count+' שאלות מהספר ממתינות לחזרה.'):(siteLanguage==='en'?'There are no incorrect questions waiting for review.':'אין כרגע שאלות שגויות שממתינות לחזרה.');if(shouldCelebrate)awardBookCompletion(bookKey)}
 function retryQuiz(){showScreen('learn');prepareReading(bookKey)}
 function createRoom(mode){let code=String(Math.floor(100000+Math.random()*900000));let panel=document.getElementById('roomPanel');panel.style.display='block';panel.innerHTML=`<div class="mini">חדר הדגמה · ${mode}</div><h3>החדר שלך מוכן בתצוגת אב־טיפוס</h3><div class="bigcode">${code}</div><p>קוד הצטרפות לדוגמה. כרגע אין שרת שמאפשר למשתתפים אחרים להצטרף בפועל.</p><div class="person"><span>את/ה — מארח/ת</span><span class="badge">מוכן</span></div><div class="person"><span>שחקנים נוספים</span><span class="badge">ממתינים לחיבור שרת</span></div><p class="muted">בגרסה מלאה: 10–15 שאלות, טיימר, ניקוד על דיוק ומהירות, הסברים בסיום ולוח תוצאות.</p>`}
+
+let dailyChallengeItems=[],dailyChallengeIndex=0,dailyChallengeCorrect=0,dailyChallengeChosen=false;
+function localDayKey(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function todayChallengeItems(){const all=[];Object.entries(activeBanks()).forEach(([book,bank])=>bank.qs.forEach((q,index)=>all.push({q,book,index,bookName:bank.name})));if(!all.length)return[];const d=new Date(),day=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/86400000),start=(day*11+7)%all.length,picked=[],seen=new Set();for(let step=0;step<all.length&&picked.length<Math.min(5,all.length);step++){const item=all[(start+step*37)%all.length],key=item.book+':'+item.index;if(!seen.has(key)){seen.add(key);picked.push(item)}}return picked}
+function dailyChallengeSaved(){try{return JSON.parse(localStorage.getItem('vahagitaDailyChallenge')||'{}')}catch(e){return{}}}
+function renderDailyChallengeCard(){const status=document.getElementById('dailyChallengeStatus'),button=document.getElementById('dailyChallengeStart');if(!status||!button)return;const saved=dailyChallengeSaved(),today=localDayKey(),en=siteLanguage==='en';if(saved.date===today&&Number.isFinite(saved.correct)){status.textContent=en?'Completed · '+saved.correct+'/'+saved.total:'הושלם · '+saved.correct+'/'+saved.total;button.textContent=en?'Practice again':'לתרגול חוזר'}else{status.textContent=en?'Preview':'תצוגה מקדימה';button.textContent=en?'Open today’s challenge':'פתיחת אתגר היום'}}
+function startDailyChallenge(){dailyChallengeItems=todayChallengeItems();dailyChallengeIndex=0;dailyChallengeCorrect=0;dailyChallengeChosen=false;if(!dailyChallengeItems.length)return;document.getElementById('dailyChallengePlay').hidden=false;document.getElementById('dailyChallengeResult').hidden=true;showScreen('dailyChallenge');renderDailyChallengeQuestion()}
+function renderDailyChallengeQuestion(){if(!dailyChallengeItems.length)return;const item=dailyChallengeItems[dailyChallengeIndex],q=item.q,en=siteLanguage==='en',total=dailyChallengeItems.length;dailyChallengeChosen=false;document.getElementById('dailyChallengeCounter').textContent=en?'Question '+(dailyChallengeIndex+1)+' of '+total:'שאלה '+(dailyChallengeIndex+1)+' מתוך '+total;document.getElementById('dailyChallengeBook').textContent=item.bookName;document.getElementById('dailyChallengeProgress').style.width=(dailyChallengeIndex/total*100)+'%';document.getElementById('dailyChallengeQuestion').textContent=q.q;document.getElementById('dailyChallengeReference').textContent=en?'Read in your Bible: '+q.ref:'לקריאה בספר שלך: '+q.ref;const options=document.getElementById('dailyChallengeOptions');options.innerHTML='';q.o.forEach((value,i)=>{const b=document.createElement('button'),letter=document.createElement('span'),label=document.createElement('span');b.type='button';b.className='option';letter.className='letter';letter.textContent=en?['A','B','C','D'][i]:['א','ב','ג','ד'][i];label.textContent=value;b.append(letter,label);b.onclick=()=>chooseDailyChallengeAnswer(i);options.appendChild(b)});const feedback=document.getElementById('dailyChallengeFeedback');feedback.className='feedback';feedback.innerHTML='';const next=document.getElementById('dailyChallengeNext');next.disabled=true;next.textContent=en?'Check answer':'בדיקה'}
+function chooseDailyChallengeAnswer(answer){if(dailyChallengeChosen)return;dailyChallengeChosen=true;const item=dailyChallengeItems[dailyChallengeIndex],q=item.q,en=siteLanguage==='en',buttons=[...document.querySelectorAll('#dailyChallengeOptions .option')],ok=answer===q.a;if(ok)dailyChallengeCorrect++;buttons.forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add('correct');if(i===answer&&i!==q.a)b.classList.add('wrong')});const feedback=document.getElementById('dailyChallengeFeedback');feedback.className='feedback show';const title=document.createElement('strong'),body=document.createElement('div'),ref=document.createElement('small');title.textContent=ok?(en?'Correct — well done!':'נכון! כל הכבוד.'):(en?'Not quite — keep learning.':'כמעט — ממשיכים ללמוד.');body.textContent=ok?(en?'Why: ':'למה: ')+q.why:(en?'The correct answer is “'+q.o[q.a]+'”. Why: ':'התשובה הנכונה היא ״'+q.o[q.a]+'״. למה: ')+q.why;ref.textContent=(en?'Reading reference: ':'מקור לקריאה: ')+q.ref;feedback.append(title,body,ref);const next=document.getElementById('dailyChallengeNext');next.disabled=false;next.textContent=dailyChallengeIndex===dailyChallengeItems.length-1?(en?'View result':'לתוצאה'):(en?'Next question':'לשאלה הבאה')}
+function nextDailyChallengeQuestion(){if(!dailyChallengeChosen)return;if(dailyChallengeIndex<dailyChallengeItems.length-1){dailyChallengeIndex++;renderDailyChallengeQuestion();return}finishDailyChallenge()}
+function finishDailyChallenge(){const total=dailyChallengeItems.length,en=siteLanguage==='en';localStorage.setItem('vahagitaDailyChallenge',JSON.stringify({date:localDayKey(),correct:dailyChallengeCorrect,total}));document.getElementById('dailyChallengePlay').hidden=true;document.getElementById('dailyChallengeResult').hidden=false;document.getElementById('dailyChallengeScore').textContent=dailyChallengeCorrect+'/'+total;document.getElementById('dailyChallengeResultTitle').textContent=en?'Well done on today’s challenge!':'כל הכבוד על אתגר היום!';document.getElementById('dailyChallengeResultText').textContent=en?'Your score is saved only on this device for now. Return to the physical Bible and read the references again — the community version will arrive with accounts and a server.':'התוצאה נשמרה כרגע רק במכשיר הזה. חזור/י אל הספר הפיזי וקרא/י שוב את ההפניות — גרסת הקהילה תיפתח עם חשבונות ושרת.';document.getElementById('dailyChallengeProgress').style.width='100%';renderDailyChallengeCard()}
+
 function profileInitials(name){const words=name.trim().split(/\s+/).filter(Boolean);if(!words.length)return siteLanguage==='en'?'V':'ו';return words.slice(0,2).map(w=>[...w][0]).join('').toLocaleUpperCase('en-US')}
 function pfAv(){const n=(document.getElementById('pfName').value||'').trim(),av=document.getElementById('pfAv'),pal=['#244d68','#287a58','#a8742b','#7a4a8a','#a84343'],chosen=localStorage.getItem('vahagita_avatar')||'initials';av.textContent=chosen==='initials'?profileInitials(n):chosen;av.style.background=pal[(n?n.charCodeAt(0):0)%pal.length];document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.toggle('on',b.dataset.avatar===chosen))}
 function setAvatar(avatar){localStorage.setItem('vahagita_avatar',avatar);pfAv()}
