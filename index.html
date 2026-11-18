@@ -459,7 +459,7 @@ Object.assign(EN,{
 function tr(text){return siteLanguage==='en'?(DEMO_EN[text]||EN[text]||text):text}
 function translateTextNodes(root=document.body){const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);const nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(n=>{const key=n.nodeValue.trim();if(!key)return;if(n.__heText===undefined)n.__heText=n.nodeValue;const source=n.__heText.trim();n.nodeValue=siteLanguage==='en'?(EN[source]||n.__heText):n.__heText});}
 function renderFooter(){const en=siteLanguage==='en',brand=document.getElementById('footerBrand'),line=document.getElementById('footerLine');if(brand)brand.textContent=en?'Vahagita':'והגית';if(line)line.textContent=en?'Return to the Book · Study in Scripture · Grow deeper together':'חוזרים אל הספר · לומדים מתוך הכתובים · מעמיקים יחד'}
-function applyLanguage(){document.documentElement.lang=siteLanguage;document.documentElement.dir=siteLanguage==='en'?'ltr':'rtl';document.body.classList.toggle('lang-en',siteLanguage==='en');document.getElementById('languageToggle').innerHTML=siteLanguage==='en'?'English <b>עב</b>':'עברית <b>EN</b>';translateTextNodes();const fields={momentAnswer:siteLanguage==='en'?'You can answer briefly, or simply carry the question with you through the day…':'אפשר לענות בקצרה, או רק לקחת את השאלה איתך להמשך היום...',pfName:siteLanguage==='en'?'What should we call you?':'איך לקרוא לך?',bbText:siteLanguage==='en'?'What is on your heart?':'מה על ליבך?'};Object.entries(fields).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.placeholder=value});[['initials','Initials','ראשי תיבות'],['🌿','Leaf','עלה'],['🕊️','Dove','יונה'],['📖','Book','ספר'],['✨','Light','אור']].forEach(a=>{const b=document.querySelector('.avatar-choice[data-avatar="'+a[0]+'"]');if(b)b.title=siteLanguage==='en'?a[1]:a[2]});renderMoment();renderProfile();renderReadingPathTeaser();renderDailyChallengeCard();if(document.getElementById('readingPath').classList.contains('active'))renderReadingPath();if(document.getElementById('dailyChallenge').classList.contains('active')){dailyChallengeItems=todayChallengeItems();renderDailyChallengeQuestion();};renderFooter();}
+function applyLanguage(){document.documentElement.lang=siteLanguage;document.documentElement.dir=siteLanguage==='en'?'ltr':'rtl';document.body.classList.toggle('lang-en',siteLanguage==='en');document.getElementById('languageToggle').innerHTML=siteLanguage==='en'?'English <b>עב</b>':'עברית <b>EN</b>';translateTextNodes();const fields={momentAnswer:siteLanguage==='en'?'You can answer briefly, or simply carry the question with you through the day…':'אפשר לענות בקצרה, או רק לקחת את השאלה איתך להמשך היום...',pfName:siteLanguage==='en'?'What should we call you?':'איך לקרוא לך?',bbText:siteLanguage==='en'?'What is on your heart?':'מה על ליבך?'};Object.entries(fields).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.placeholder=value});[['initials','Initials','ראשי תיבות'],['🌿','Leaf','עלה'],['🕊️','Dove','יונה'],['📖','Book','ספר'],['✨','Light','אור']].forEach(a=>{const b=document.querySelector('.avatar-choice[data-avatar="'+a[0]+'"]');if(b)b.title=siteLanguage==='en'?a[1]:a[2]});renderMoment();renderProfile();renderReadingPathTeaser();renderDailyChallengeCard();if(document.getElementById('readingPath').classList.contains('active'))renderReadingPath();if(document.getElementById('dailyChallenge').classList.contains('active')){dailyChallengeItems=todayChallengeItems();renderDailyChallengeQuestion();};renderFooter();if(window.refreshScriptureBackground)window.refreshScriptureBackground();}
 function toggleLanguage(){siteLanguage=siteLanguage==='he'?'en':'he';localStorage.setItem('vahagita_language',siteLanguage);applyLanguage()}
 const banks={
  john:{name:"בשורת יוחנן",qs:[
@@ -3284,7 +3284,57 @@ const BB_CODE='7751';BB.admin=false;BB.log=(()=>{try{return JSON.parse(localStor
 function bbPanel(){const w=document.createElement('div');w.style.cssText='text-align:right;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px auto;max-width:640px;font-size:13px';const H=t=>{const e=document.createElement('b');e.textContent=t;e.style.cssText='display:block;margin:8px 0 4px';w.appendChild(e)};const Li=(t,f)=>{const e=document.createElement('div');e.textContent=t;e.style.padding='3px 0';if(f){e.style.cursor='pointer';e.onclick=f}w.appendChild(e)};const rep=[];BB.data.forEach(p=>{if(p.rep&&p.rep.length)rep.push(['בועה',p,p]);p.r.forEach(r=>{if(r.rep&&r.rep.length)rep.push(['תגובה',r,p])})});H('דיווחים ('+rep.length+')');if(!rep.length)Li('אין דיווחים.');rep.forEach(a=>{const e=document.createElement('div');e.style.cssText='padding:6px 0;border-bottom:1px solid var(--line)';const t=document.createElement('div');t.textContent='⚑'+a[1].rep.length+' · '+a[0]+': '+a[1].t.slice(0,50)+' ('+[...new Set(a[1].rep)].join(', ')+')';t.style.cursor='pointer';t.onclick=()=>bbOpen(a[2].id);const r=document.createElement('div');r.style.cssText='display:flex;gap:14px;margin-top:4px';r.append(bbBtn('✔ אישור והסתרה',()=>{bbReview(a[1],a[0],1);bbRender();bbAdminUI()}),bbBtn('✖ דחייה',()=>{bbReview(a[1],a[0],0);bbRender();bbAdminUI()}));e.append(t,r);w.appendChild(e)});H('מוסתרות: '+BB.data.filter(p=>p.h).length+' בועות');H('יומן פעולות (מנהל בלבד)');if(!BB.log.length)Li('היומן ריק.');BB.log.slice(0,15).forEach(e=>Li(e.t+' · '+e.a+' '+e.w+': '+e.x));return w}
 function bbAdminUI(){const a=document.getElementById('bbAdmin');a.innerHTML='';a.style.margin='10px 0';if(BB.admin){const s=document.createElement('b');s.textContent='🛡 מצב מנהל ';a.append(s,bbBtn('לוח מנהל',()=>{BB.panel=!BB.panel;bbAdminUI()}),' ',bbBtn('יציאה',()=>{BB.admin=false;BB.panel=false;bbAdminUI();bbRender()}));if(BB.panel)a.appendChild(bbPanel())}else if(BB.ask){const i=document.createElement('input');i.type='password';i.inputMode='numeric';i.maxLength=4;i.placeholder='••••';i.style.cssText='width:84px;text-align:center;border:1px solid var(--line);border-radius:8px;padding:6px';i.oninput=()=>{if(i.value.length===4){if(i.value===BB_CODE){BB.admin=true;BB.ask=false;bbAdminUI();bbRender()}else{i.value='';i.style.borderColor='var(--red)'}}};a.appendChild(i);i.focus()}else a.style.margin='0'}
 (function(){let taps=[];const hd=document.querySelector('#community h3');hd.addEventListener('click',()=>{const n=Date.now();taps=taps.filter(x=>n-x<2500);taps.push(n);if(taps.length>=5){taps=[];if(!BB.admin){BB.ask=true;bbAdminUI()}}});addEventListener('keydown',e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==='a'&&!BB.admin){BB.ask=true;bbAdminUI()}})})();bbAdminUI();
-(function(){const cv=document.getElementById('liveBg'),cx=cv.getContext('2d');if(!cx)return;let W,H,t=0;const still=matchMedia('(prefers-reduced-motion:reduce)').matches;const orbs=[[.2,.25,.34,'213,168,78',.2,.00011,.00013],[.8,.2,.4,'120,170,200',.22,.00009,.00012],[.55,.8,.42,'213,168,78',.14,.00012,.0001],[.1,.85,.3,'150,190,170',.16,.0001,.00014]];const motes=Array.from({length:46},()=>({x:Math.random(),y:Math.random(),r:.8+Math.random()*2.2,v:.00004+Math.random()*.00009,p:Math.random()*6.28,a:.25+Math.random()*.45}));function size(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0)}function draw(){cx.clearRect(0,0,W,H);orbs.forEach((o,i)=>{const x=(o[0]+Math.sin(t*o[5]*6+i*1.7)*.12)*W,y=(o[1]+Math.cos(t*o[6]*6+o[2]*9)*.1)*H,r=o[2]*Math.max(W,H);const g=cx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'rgba('+o[3]+','+o[4]+')');g.addColorStop(1,'rgba('+o[3]+',0)');cx.fillStyle=g;cx.fillRect(0,0,W,H)});motes.forEach(m=>{if(!still)m.y-=m.v*16;if(m.y<-.02){m.y=1.02;m.x=Math.random()}const x=(m.x+Math.sin(t*.0006+m.p)*.015)*W,y=m.y*H,tw=.6+.4*Math.sin(t*.002+m.p);cx.beginPath();cx.fillStyle='rgba(213,168,78,'+(m.a*tw)+')';cx.shadowColor='rgba(213,168,78,.6)';cx.shadowBlur=8;cx.arc(x,y,m.r,0,6.28);cx.fill();cx.shadowBlur=0})}function loop(ts){t=ts;draw();if(!still)requestAnimationFrame(loop)}size();addEventListener('resize',()=>{size();draw()});requestAnimationFrame(loop)})();
+(function(){
+const cv=document.getElementById('liveBg'),cx=cv&&cv.getContext('2d');if(!cx)return;
+let W=0,H=0,t=0;
+const still=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const orbs=[[.2,.25,.34,'213,168,78',.2,.00011,.00013],[.8,.2,.4,'120,170,200',.22,.00009,.00012],[.55,.8,.42,'213,168,78',.14,.00012,.0001],[.1,.85,.3,'150,190,170',.16,.0001,.00014]];
+const referencePools={
+ tanakh:[
+  {he:'ישעיהו מ׳ 28–31',en:'Isaiah 40:28–31'},{he:'ישעיהו מ״א 10',en:'Isaiah 41:10'},
+  {he:'תהילים כ״ג 1',en:'Psalm 23:1'},{he:'תהילים קי״ט 105',en:'Psalm 119:105'},
+  {he:'משלי ג׳ 5–6',en:'Proverbs 3:5–6'},{he:'יהושע א׳ 8',en:'Joshua 1:8'},
+  {he:'דברים ו׳ 4–5',en:'Deuteronomy 6:4–5'},{he:'ירמיהו כ״ט 11',en:'Jeremiah 29:11'},
+  {he:'תהילים צ״א 1',en:'Psalm 91:1'}
+ ],
+ messianic:[
+  {he:'ישעיהו ט׳ 5',en:'Isaiah 9:6'},{he:'ישעיהו י״א 1–2',en:'Isaiah 11:1–2'},
+  {he:'ישעיהו מ׳ 3',en:'Isaiah 40:3'},{he:'זכריה ט׳ 9',en:'Zechariah 9:9'},
+  {he:'תהילים קי״ח 22',en:'Psalm 118:22'}
+ ],
+ newTestament:[
+  {he:'יוחנן ג׳ 16',en:'John 3:16'},{he:'רומים ח׳ 28',en:'Romans 8:28'},
+  {he:'מתי י״א 28',en:'Matthew 11:28'},{he:'פיליפים ד׳ 6–7',en:'Philippians 4:6–7'},
+  {he:'אפסים ב׳ 8–9',en:'Ephesians 2:8–9'},{he:'גלטים ה׳ 22–23',en:'Galatians 5:22–23'},
+  {he:'יעקב א׳ 5',en:'James 1:5'},{he:'פטרוס א׳ ה׳ 7',en:'1 Peter 5:7'},
+  {he:'התגלות כ״א 4',en:'Revelation 21:4'},{he:'אפסים ו׳ 12',en:'Ephesians 6:12'}
+ ]
+};
+const referenceSlots=[
+ {x:.11,y:.15,pool:'tanakh',seed:0,phase:.13,alpha:.22},
+ {x:.74,y:.13,pool:'newTestament',seed:1,phase:.69,alpha:.2},
+ {x:.47,y:.27,pool:'messianic',seed:2,phase:.34,alpha:.19},
+ {x:.9,y:.36,pool:'tanakh',seed:3,phase:.81,alpha:.2},
+ {x:.14,y:.48,pool:'newTestament',seed:4,phase:.51,alpha:.22},
+ {x:.55,y:.56,pool:'tanakh',seed:5,phase:.92,alpha:.19},
+ {x:.77,y:.66,pool:'messianic',seed:1,phase:.23,alpha:.22},
+ {x:.11,y:.78,pool:'tanakh',seed:6,phase:.58,alpha:.2},
+ {x:.35,y:.87,pool:'newTestament',seed:6,phase:.76,alpha:.22},
+ {x:.63,y:.82,pool:'messianic',seed:3,phase:.04,alpha:.19},
+ {x:.9,y:.91,pool:'newTestament',seed:8,phase:.42,alpha:.18}
+];
+const poolColors={tanakh:'59,96,105',messianic:'158,111,33',newTestament:'37,83,108'};
+function size(){const d=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0)}
+function activeReference(slot){const list=referencePools[slot.pool],cycle=Math.floor((t+slot.phase*8000)/24000);return list[(slot.seed+cycle)%list.length]}
+function drawOrbs(){orbs.forEach((o,i)=>{const x=(o[0]+Math.sin(t*o[5]*6+i*1.7)*.12)*W,y=(o[1]+Math.cos(t*o[6]*6+o[2]*9)*.1)*H,r=o[2]*Math.max(W,H),g=cx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,'rgba('+o[3]+','+o[4]+')');g.addColorStop(1,'rgba('+o[3]+',0)');cx.fillStyle=g;cx.fillRect(0,0,W,H)})}
+function drawReferences(){const visible=W<540?6:W<880?8:10,fontSize=W<540?10:W<880?11.5:13;cx.textAlign='center';cx.textBaseline='middle';cx.font='700 '+fontSize+'px Arial, "Noto Sans Hebrew", sans-serif';for(let i=0;i<visible;i++){const slot=referenceSlots[i],shift=(t+slot.phase*5200)%24000/24000,fade=.45+.55*Math.sin(Math.PI*shift),x=(slot.x+Math.sin(t*.000045+slot.phase*12)*.014)*W,y=(slot.y+Math.cos(t*.000038+slot.phase*15)*.011)*H,ref=activeReference(slot),label=siteLanguage==='en'?ref.en:ref.he,color=poolColors[slot.pool];cx.save();cx.translate(x,y);cx.rotate(Math.sin(t*.000024+slot.phase*20)*.018);cx.fillStyle='rgba('+color+','+(slot.alpha*fade)+')';cx.shadowColor='rgba(255,255,255,'+(slot.alpha*.5)+')';cx.shadowBlur=8;cx.fillText(label,0,0);cx.restore()}}
+function draw(now){t=typeof now==='number'?now:performance.now();cx.clearRect(0,0,W,H);drawOrbs();drawReferences()}
+function loop(now){draw(now);if(!still)requestAnimationFrame(loop)}
+size();
+addEventListener('resize',()=>{size();draw(performance.now())});
+window.refreshScriptureBackground=()=>draw(performance.now());
+requestAnimationFrame(loop)
+})();
 
 const CMK='vahagita_cm';const CM=(()=>{try{const d=JSON.parse(localStorage.getItem(CMK));if(d&&d.help&&d.disc&&d.safe)return d}catch(e){}return {"help": [{"id": 1, "kind": "שיחה על פסוק", "book": "רומים", "ref": "ח׳ 28", "t": "קשה לי להבין איך הכול פועל יחד לטובה כשעוברת עליי תקופה קשה. אשמח לשיחה.", "n": "דנה", "v": 1}, {"id": 2, "kind": "חברותא ללימוד", "book": "יוחנן", "ref": "", "t": "מחפש חברותא ללמוד יחד בשורת יוחנן פעם בשבוע.", "n": null, "v": 0}], "disc": [{"id": 1, "title": "מה פירושה של לידה מלמעלה בשיחה עם נקדימון?", "book": "יוחנן", "ref": "ג׳ 1–8", "t": "מה הכוונה בלידה מלמעלה, ואיך היא קשורה למים ולרוח?", "n": "איתי", "r": [{"k": "פרשנות", "t": "יש הרואים בזה התחדשות רוחנית על ידי רוח הקודש, כפי שמתואר בפסוק 8.", "n": "דנה"}, {"k": "פרשנות", "t": "אחרים מדגישים את הקשר למים ולטהרה, בהשוואה ליחזקאל ל״ו 25–27.", "n": null}]}, {"id": 2, "title": "איך חג השבועות מתחבר לירידת רוח הקודש?", "book": "מעשי השליחים", "ref": "ב׳ 1–4", "t": "מה המשמעות של כך שהדבר קרה דווקא בחג השבועות?", "n": null, "r": []}], "safe": {"contact": "כל המשתמשים", "name": "השם שלי", "blocked": ["משתמש_17"]}}})();CM.open=null;CM.ex=null;CM.f='הצג הכול';CM.hf='הצג הכול';
 function cmSave(){try{localStorage.setItem(CMK,JSON.stringify(CM))}catch(e){}}
