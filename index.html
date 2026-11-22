@@ -203,6 +203,58 @@ html.logout-open,body.logout-open{overflow:hidden;overscroll-behavior:none}
 body.lang-en .women-scripture-teaser{text-align:left;direction:ltr}
 @media(max-width:520px){.women-scripture-teaser{gap:10px;padding:13px}.women-scripture-icon{flex-basis:38px;width:38px;height:38px}}
 </style>
+<style id="selective-glass-accents">
+/* Subtle glass accents for the brand and header controls only. */
+.brand .logo {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.64);
+  background: linear-gradient(135deg, rgba(74,130,160,.45), rgba(36,77,104,.32));
+  box-shadow: 0 6px 20px rgba(36,77,104,.20), inset 0 1px 0 rgba(255,255,255,.36);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.brand .logo::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 13px;
+  pointer-events: none;
+  background: linear-gradient(145deg, rgba(255,255,255,.24), rgba(255,255,255,0) 58%);
+}
+.brand .logo svg { position: relative; z-index: 1; }
+.account-button {
+  background: linear-gradient(120deg, rgba(18,72,100,.55), rgba(69,142,162,.40));
+  border: 1px solid rgba(255,255,255,.78);
+  box-shadow: 0 5px 14px rgba(20,56,76,.16), inset 0 1px 0 rgba(255,255,255,.30);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.account-button:hover {
+  background: linear-gradient(120deg, rgba(18,72,100,.64), rgba(69,142,162,.50));
+}
+.profile-access {
+  background: rgba(255,254,250,.34);
+  border-color: rgba(255,255,255,.72);
+  box-shadow: 0 5px 14px rgba(29,63,78,.10), inset 0 1px 0 rgba(255,255,255,.52);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.language-toggle {
+  color: #fff;
+  background: linear-gradient(120deg, rgba(18,72,100,.55), rgba(69,142,162,.40));
+  border-color: rgba(255,255,255,.82);
+  box-shadow: 0 6px 16px rgba(20,56,76,.17), inset 0 1px 0 rgba(255,255,255,.46);
+  text-shadow: 0 1px 5px rgba(10,43,59,.5);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.language-toggle:hover {
+  color: #fff;
+  background: linear-gradient(120deg, rgba(18,72,100,.64), rgba(69,142,162,.50));
+}
+.language-toggle b { color: #ffe3a0; }
+</style>
 </head>
 <body>
 <canvas id="liveBg" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none"></canvas>
