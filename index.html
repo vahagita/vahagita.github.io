@@ -203,57 +203,20 @@ html.logout-open,body.logout-open{overflow:hidden;overscroll-behavior:none}
 body.lang-en .women-scripture-teaser{text-align:left;direction:ltr}
 @media(max-width:520px){.women-scripture-teaser{gap:10px;padding:13px}.women-scripture-icon{flex-basis:38px;width:38px;height:38px}}
 </style>
-<style id="selective-glass-accents">
-/* Subtle glass accents for the brand and header controls only. */
-.brand .logo {
-  position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(255,255,255,.64);
-  background: linear-gradient(135deg, rgba(74,130,160,.45), rgba(36,77,104,.32));
-  box-shadow: 0 6px 20px rgba(36,77,104,.20), inset 0 1px 0 rgba(255,255,255,.36);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-.brand .logo::before {
-  content: "";
-  position: absolute;
-  inset: 1px;
-  border-radius: 13px;
-  pointer-events: none;
-  background: linear-gradient(145deg, rgba(255,255,255,.24), rgba(255,255,255,0) 58%);
-}
-.brand .logo svg { position: relative; z-index: 1; }
-.account-button {
-  background: linear-gradient(120deg, rgba(18,72,100,.55), rgba(69,142,162,.40));
-  border: 1px solid rgba(255,255,255,.78);
-  box-shadow: 0 5px 14px rgba(20,56,76,.16), inset 0 1px 0 rgba(255,255,255,.30);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-.account-button:hover {
-  background: linear-gradient(120deg, rgba(18,72,100,.64), rgba(69,142,162,.50));
-}
-.profile-access {
-  background: rgba(255,254,250,.34);
-  border-color: rgba(255,255,255,.72);
-  box-shadow: 0 5px 14px rgba(29,63,78,.10), inset 0 1px 0 rgba(255,255,255,.52);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-.language-toggle {
-  color: #fff;
-  background: linear-gradient(120deg, rgba(18,72,100,.55), rgba(69,142,162,.40));
-  border-color: rgba(255,255,255,.82);
-  box-shadow: 0 6px 16px rgba(20,56,76,.17), inset 0 1px 0 rgba(255,255,255,.46);
-  text-shadow: 0 1px 5px rgba(10,43,59,.5);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-}
-.language-toggle:hover {
-  color: #fff;
-  background: linear-gradient(120deg, rgba(18,72,100,.64), rgba(69,142,162,.50));
-}
-.language-toggle b { color: #ffe3a0; }
+<style id="account-language-corners">
+/* Keep account actions and language control in opposite corners; position
+   them explicitly for reliable rendering in both reading directions. */
+header{padding-top:106px;padding-left:0!important;padding-right:0!important}
+.account-zone{top:9px;left:auto!important;right:auto!important}
+.language-picker{top:9px;left:auto!important;right:auto!important}
+html[dir="rtl"] .account-zone{right:0!important;left:auto!important}
+html[dir="ltr"] .account-zone{left:0!important;right:auto!important}
+html[dir="rtl"] .language-picker{left:0!important;right:auto!important}
+html[dir="ltr"] .language-picker{right:0!important;left:auto!important}
+.account-avatar{width:22px;height:22px;flex:0 0 22px;display:inline-grid;place-items:center;border-radius:50%;font-size:15px;line-height:1;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.55)}
+.account-avatar-initials{font-size:9px;font-weight:800;letter-spacing:-.3px}
+.profile-access .account-avatar{background:rgba(36,77,104,.1);border-color:rgba(36,77,104,.16)}
+@media(max-width:950px){header{padding-top:106px}.account-zone,.language-picker{top:9px}}
 </style>
 </head>
 <body>
@@ -487,8 +450,7 @@ body.lang-en .women-scripture-teaser{text-align:left;direction:ltr}
  </section>
 </div>
 <script>
-const requestedLanguage=new URLSearchParams(location.search).get('lang');
-let siteLanguage=(requestedLanguage==='en'||requestedLanguage==='he')?requestedLanguage:(localStorage.getItem('vahagita_language')||'he');
+let siteLanguage=localStorage.getItem('vahagita_language')||'he';
 const EN={
  'ראשי':'Home','לימוד':'Study','רגע והגית':'Vahagita Moment','לגלות את ישוע · בקרוב':'Discover Jesus · soon','אתגרים':'Challenges','קהילה':'Community','הפרופיל שלי':'My profile','התחברות / הרשמה':'Sign in / Sign up',
  'לומדים · מבינים · זוכרים':'Learn · Understand · Remember','והגית לא מחליף את הספר הפיזי שלך — הוא מחזיר אותך אליו.':'Vahagita does not replace your physical Bible — it brings you back to it.',
@@ -584,7 +546,7 @@ function translateTextNodes(root=document.body){const walker=document.createTree
 function localizeAttributes(root=document.body){const attrs=['aria-label','aria-description','title','placeholder','label'];root.querySelectorAll('*').forEach(el=>attrs.forEach(attr=>{const value=el.getAttribute(attr);if(!value)return;const store='__heAttr_'+attr.replace(/[^a-z]/gi,'_');if(el[store]===undefined)el[store]=value;const source=String(el[store]).trim();el.setAttribute(attr,siteLanguage==='en'?(DEMO_EN[source]||EN[source]||el[store]):el[store]);}));}
 function renderFooter(){const en=siteLanguage==='en',brand=document.getElementById('footerBrand'),line=document.getElementById('footerLine');if(brand)brand.textContent=en?'Vahagita':'והגית';if(line)line.textContent=en?'Return to the Book · Study in Scripture · Grow deeper together':'חוזרים אל הספר · לומדים מתוך הכתובים · מעמיקים יחד'}
 function applyLanguage(){document.documentElement.lang=siteLanguage;document.documentElement.dir=siteLanguage==='en'?'ltr':'rtl';document.body.classList.toggle('lang-en',siteLanguage==='en');document.getElementById('languageToggle').innerHTML=siteLanguage==='en'?'English <b>עב</b>':'עברית <b>EN</b>';translateTextNodes();localizeAttributes();const fields={momentAnswer:siteLanguage==='en'?'You can answer briefly, or simply carry the question with you through the day…':'אפשר לענות בקצרה, או רק לקחת את השאלה איתך להמשך היום...',pfName:siteLanguage==='en'?'What should we call you?':'איך לקרוא לך?',bbText:siteLanguage==='en'?'What is on your heart?':'מה על ליבך?'};Object.entries(fields).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.placeholder=value});const initials=document.querySelector('.avatar-choice[data-avatar="initials"]');if(initials)initials.textContent=siteLanguage==='en'?'A':'א';[['initials','Initials','ראשי תיבות'],['🌿','Leaf','עלה'],['🕊️','Dove','יונה'],['📖','Book','ספר'],['✨','Light','אור']].forEach(a=>{const b=document.querySelector('.avatar-choice[data-avatar="'+a[0]+'"]');if(b)b.title=siteLanguage==='en'?a[1]:a[2]});renderMoment();renderProfile();renderStats();renderReadingPathTeaser();renderDailyChallengeCard();localizeDailyChallengeResult();if(document.getElementById('readingPath').classList.contains('active'))renderReadingPath();if(document.getElementById('dailyChallenge').classList.contains('active')){dailyChallengeItems=todayChallengeItems();if(document.getElementById('dailyChallengeResult').hidden)renderDailyChallengeQuestion();localizeDailyChallengeResult();};renderFooter();renderAccountZone();if(typeof cmRender==='function'&&CM.open)cmRender();if(typeof bbRender==='function'&&document.getElementById('community').classList.contains('active'))bbRender();localizeAttributes();if(window.refreshScriptureBackground)window.refreshScriptureBackground();}
-function toggleLanguage(){siteLanguage=siteLanguage==='he'?'en':'he';localStorage.setItem('vahagita_language',siteLanguage);const url=new URL(location.href);url.searchParams.set('lang',siteLanguage);history.replaceState(null,'',url);applyLanguage()}
+function toggleLanguage(){siteLanguage=siteLanguage==='he'?'en':'he';localStorage.setItem('vahagita_language',siteLanguage);applyLanguage()}
 const banks={
  john:{name:"בשורת יוחנן",qs:[
  {q:"מה היה האות הראשון שישוע עשה לפי בשורת יוחנן?",o:["ריפוי העיוור מלידה","הפיכת מים ליין בחתונה בקנה","האכלת חמשת אלפים איש","החייאת אלעזר"],a:1,ref:"יוחנן ב׳ 1–11",why:"יוחנן מתאר את הפיכת המים ליין בחתונה בקנה כאות הראשון שישוע עשה. הסיפור מסתיים בכך שתלמידיו האמינו בו.",hint:"האירוע התרחש במהלך חתונה בגליל."},
@@ -3126,7 +3088,7 @@ const activeBanks=()=>siteLanguage==='en'?bankEN:banks;
 const momentQuestions=[
  {title:'איזה פסוק שקראת לאחרונה נשאר איתך — ולמה?',body:'קח/י רגע להיזכר בקריאה האחרונה שלך. אפשר לפתוח שוב את הספר, לקרוא את הפסוק ולתת לו מקום במהלך היום.'},
  {title:'מה ההבדל בין לדעת על אלוהים לבין לבטוח בו?',body:'זו שאלה למחשבה, לא מבחן. כתוב/כתבי מחשבה קצרה, או שוחח/י עליה עם אדם קרוב.'},
- {title:'מיני שאלון: מה מציע יהושע א׳ 8 לעשות עם דבר התורה?',body:'לפני שבוחרים תשובה, פתח/י את התנ״ך הפיזי וקרא/י את הפסוק במלואו.',reference:'יהושע א׳ 8'},
+ {title:'מיני שאלון: מה מציע יהושע א׳ 8 לעשות עם דבר התורה?',body:'לפני שבוחרים תשובה, פתח/י את התנ״ך הפיזי וקרא/י את הפסוק במלואו.',reference:'קרא/י את יהושע א׳ 8 ושאל/י: מה היחס בין הגייה, עיון ועשייה?'},
  {title:'מה יכול לעזור לך לחזור היום אל הכתובים, אפילו לעשר דקות?',body:'בחר/י צעד קטן ומעשי: זמן, מקום, פרק, או אדם שילמד איתך.'},
  {title:'איזו שאלה על אמונה או על הכתובים היית רוצה לבדוק בכנות?',body:'אין חובה לפתור הכול עכשיו. אפשר לנסח את השאלה ולחפש בהמשך פסוקים, מקורות ושיחה טובה.'},
  {"title": "מה היה הרגע האחרון שבו הרגשת קרבה לאלוהים?", "body": "אין צורך בתשובה גדולה. אפשר לזכור רגע קטן, בתפילה, בטבע או בשיחה עם מישהו."},
@@ -3147,7 +3109,7 @@ const momentQuestions=[
 const momentQuestionsEN=[
  {title:'Which verse you read recently has stayed with you — and why?',body:'Take a moment to remember your last reading. You can reopen your Bible, read the verse again, and carry it through the day.'},
  {title:'What is the difference between knowing about God and trusting him?',body:'This is a reflection, not a test. Write a short thought or discuss it with someone close to you.'},
- {title:'Mini quiz: what does Joshua 1:8 invite us to do with the book of the Law?',body:'Before answering, open your physical Bible and read the verse in full.',reference:'Joshua 1:8'},
+ {title:'Mini quiz: what does Joshua 1:8 invite us to do with the book of the Law?',body:'Before answering, open your physical Bible and read the verse in full.',reference:'Read Joshua 1:8. What is the relationship between meditating, studying and doing?'},
  {title:'What could help you return to Scripture today, even for ten minutes?',body:'Choose one small, practical step: a time, a place, a chapter, or someone to study with.'},
  {title:'What question about faith or Scripture would you like to explore honestly?',body:'You do not have to solve everything now. Name the question and return to verses, sources and a good conversation later.'},
  {title:'When did you last feel close to God?',body:'It does not need to be a big answer. Recall a small moment in prayer, nature or conversation.'},
@@ -3319,7 +3281,7 @@ function nextDailyChallengeQuestion(){if(!dailyChallengeChosen)return;if(dailyCh
 function finishDailyChallenge(){const total=dailyChallengeItems.length,en=siteLanguage==='en';localStorage.setItem('vahagitaDailyChallenge',JSON.stringify({date:localDayKey(),correct:dailyChallengeCorrect,total}));document.getElementById('dailyChallengePlay').hidden=true;document.getElementById('dailyChallengeResult').hidden=false;document.getElementById('dailyChallengeScore').textContent=dailyChallengeCorrect+'/'+total;document.getElementById('dailyChallengeResultTitle').textContent=en?'Well done on today’s challenge!':'כל הכבוד על אתגר היום!';document.getElementById('dailyChallengeResultText').textContent=en?'Your score is saved only on this device for now. Return to the physical Bible and read the references again — the community version will arrive with accounts and a server.':'התוצאה נשמרה כרגע רק במכשיר הזה. חזור/י אל הספר הפיזי וקרא/י שוב את ההפניות — גרסת הקהילה תיפתח עם חשבונות ושרת.';document.getElementById('dailyChallengeProgress').style.width='100%';localizeDailyChallengeResult();renderDailyChallengeCard()}
 
 function profileInitials(name){const words=name.trim().split(/\s+/).filter(Boolean);if(!words.length)return siteLanguage==='en'?'V':'ו';return words.slice(0,2).map(w=>[...w][0]).join('').toLocaleUpperCase('en-US')}
-function pfAv(){const n=(document.getElementById('pfName').value||'').trim(),av=document.getElementById('pfAv'),pal=['#244d68','#287a58','#a8742b','#7a4a8a','#a84343'],chosen=localStorage.getItem('vahagita_avatar')||'initials';av.textContent=chosen==='initials'?profileInitials(n):chosen;av.style.background=pal[(n?n.charCodeAt(0):0)%pal.length];document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.toggle('on',b.dataset.avatar===chosen))}
+function pfAv(){const n=(document.getElementById('pfName').value||'').trim(),av=document.getElementById('pfAv'),pal=['#244d68','#287a58','#a8742b','#7a4a8a','#a84343'],chosen=localStorage.getItem('vahagita_avatar')||'initials';av.textContent=chosen==='initials'?profileInitials(n):chosen;av.style.background=pal[(n?n.charCodeAt(0):0)%pal.length];document.querySelectorAll('.avatar-choice').forEach(b=>b.classList.toggle('on',b.dataset.avatar===chosen));renderAccountZone()}
 function setAvatar(avatar){localStorage.setItem('vahagita_avatar',avatar);pfAv()}
 function pfNameSave(){try{localStorage.setItem('vahagita_pf_name',document.getElementById('pfName').value)}catch(e){}pfAv();if(document.getElementById('pfName').value.trim())awardAchievement('profile:name',500)}
 function renderProfile(){const sk=streakInfo(),inp=document.getElementById('pfName'),savedName=localStorage.getItem('vahagita_pf_name'),en=siteLanguage==='en';if(document.activeElement!==inp)inp.value=savedName===null?(en?'Moriel Dalal':'מוריאל דלל'):savedName;pfAv();const ds=[...new Set(progress.days)].sort();document.getElementById('pfSub').textContent=ds.length?(en?'Studying since ':'לומד/ת מאז ')+new Date(ds[0]+'T12:00:00').toLocaleDateString(en?'en-US':'he-IL'):(en?'You have not started studying yet. Your first step is waiting in the Study tab.':'עוד לא התחלת ללמוד. הצעד הראשון מחכה בטאב הלימוד.');document.getElementById('pfDays').textContent=sk.total;document.getElementById('pfCur').textContent=sk.cur;document.getElementById('pfBest').textContent=sk.best;document.getElementById('profileAnswered').textContent=progress.answered;document.getElementById('pfAcc').textContent=progress.answered?Math.round(progress.correct/progress.answered*100)+'%':'—';document.getElementById('knowledgeRating').textContent=1000+Math.min(300,Math.round(progress.correct*4));document.getElementById('competitiveRating').textContent=1000;document.getElementById('showRating').checked=localStorage.getItem('vahagitaShowRating')!=='false';
@@ -3332,7 +3294,8 @@ let demoSignedIn=false;
 function accountCopy(){const en=siteLanguage==='en';return en?{login:'Sign in / Sign up',profile:'My profile',demo:'Demo',signout:'Sign out',signoutLabel:'Sign out of the demo',logoutKicker:'Demo mode',logoutTitle:'Sign out of the demo?',logoutText:'You will return to guest mode on this device only.',stay:'No, I want to stay',confirm:'Yes, sign me out',loginNotice:'<b>You are signed in for this demo only.</b> No account was created, no email was sent, and no sign-in details were saved.',signupNotice:'<b>Your demo sign-up is complete.</b> No account was created, no email was sent, and no sign-in details were saved.',guestNotice:'<b>You are browsing as a guest.</b> You can learn and try the site on this device. Guest progress is kept in this browser only and is not synced to an account.',logoutNotice:'<b>You have left the demo.</b> You are back in guest mode on this device only.'}:{login:'התחברות / הרשמה',profile:'הפרופיל שלי',demo:'הדגמה',signout:'התנתקות',signoutLabel:'התנתקות ממצב ההדגמה',logoutKicker:'מצב הדגמה',logoutTitle:'להתנתק מההדגמה?',logoutText:'היציאה תחזיר אותך למצב אורח במכשיר הזה בלבד.',stay:'לא, רוצה להישאר',confirm:'כן, נתק אותי',loginNotice:'<b>התחברת בהדגמה בלבד.</b> לא נוצר חשבון, לא נשלח אימייל ולא נשמרו פרטי ההתחברות.',signupNotice:'<b>ההרשמה הושלמה בהדגמה בלבד.</b> לא נוצר חשבון, לא נשלח אימייל ולא נשמרו פרטי ההתחברות.',guestNotice:'<b>נכנסת כאורח/ת.</b> אפשר ללמוד ולנסות את האתר במכשיר הזה. התקדמות אורח נשמרת בדפדפן בלבד ואינה מסונכרנת לחשבון.',logoutNotice:'<b>התנתקת ממצב ההדגמה.</b> חזרת למצב אורח במכשיר הזה בלבד.'}}
 const accountProfileIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.3"/><path d="M5.5 20c.7-3.5 3.2-5.5 6.5-5.5s5.8 2 6.5 5.5"/></svg>';
 const accountExitIcon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.5 20V4.5A1.5 1.5 0 0 1 7 3h9.5v18H7A1.5 1.5 0 0 1 5.5 19.5Z"/><path d="M16.5 12h4"/><path d="m18.5 10 2 2-2 2"/><circle cx="12.5" cy="12" r=".7" fill="currentColor" stroke="none"/></svg>';
-function renderAccountZone(){const zone=document.getElementById('accountZone');if(!zone)return;const c=accountCopy();if(demoSignedIn){zone.innerHTML='<div class="account-session" role="group" aria-label="'+c.profile+'"><button class="account-profile-button" type="button" onclick="showScreen(\'profile\')">'+accountProfileIcon+'<span>'+c.profile+'</span><small class="account-demo-chip">'+c.demo+'</small></button><button class="logout-button" type="button" onclick="openLogoutConfirm()" title="'+c.signout+'" aria-label="'+c.signoutLabel+'">'+accountExitIcon+'</button></div>';return}zone.innerHTML='<button class="account-button" type="button" onclick="openAuth()">'+c.login+'</button><button class="profile-access" type="button" onclick="showScreen(\'profile\')">'+'<span class="profile-access-copy">'+accountProfileIcon+'<span>'+c.profile+'</span></span><small class="account-demo-chip">'+c.demo+'</small></button>'}
+function accountAvatarMarkup(){const chosen=localStorage.getItem('vahagita_avatar')||'initials',name=document.getElementById('pfName')?.value||'',safeInitials=profileInitials(name).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));if(chosen==='initials')return '<span class="account-avatar account-avatar-initials" aria-hidden="true">'+safeInitials+'</span>';if(['🌿','🕊️','📖','✨'].includes(chosen))return '<span class="account-avatar" aria-hidden="true">'+chosen+'</span>';return accountProfileIcon}
+function renderAccountZone(){const zone=document.getElementById('accountZone');if(!zone)return;const c=accountCopy(),avatar=accountAvatarMarkup();if(demoSignedIn){zone.innerHTML='<div class="account-session" role="group" aria-label="'+c.profile+'"><button class="account-profile-button" type="button" onclick="showScreen(\'profile\')">'+avatar+'<span>'+c.profile+'</span><small class="account-demo-chip">'+c.demo+'</small></button><button class="logout-button" type="button" onclick="openLogoutConfirm()" title="'+c.signout+'" aria-label="'+c.signoutLabel+'">'+accountExitIcon+'</button></div>';return}zone.innerHTML='<button class="account-button" type="button" onclick="openAuth()">'+c.login+'</button><button class="profile-access" type="button" onclick="showScreen(\'profile\')">'+'<span class="profile-access-copy">'+avatar+'<span>'+c.profile+'</span></span><small class="account-demo-chip">'+c.demo+'</small></button>'}
 function setHomeAccountNote(kind){const note=document.querySelector('#home .note');if(!note)return;const c=accountCopy();note.innerHTML=kind==='guest'?c.guestNotice:kind==='logout'?c.logoutNotice:kind==='signup'?c.signupNotice:c.loginNotice}
 const logoutDialog=document.getElementById('logoutDialog');
 function setLogoutScrollLock(locked){document.documentElement.classList.toggle('logout-open',locked);document.body.classList.toggle('logout-open',locked)}
@@ -3502,3 +3465,4 @@ setTimeout(recoverMissedReplyAchievement,950);
 </script>
 </body>
 </html>
+
