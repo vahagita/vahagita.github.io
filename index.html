@@ -203,6 +203,58 @@ html.logout-open,body.logout-open{overflow:hidden;overscroll-behavior:none}
 body.lang-en .women-scripture-teaser{text-align:left;direction:ltr}
 @media(max-width:520px){.women-scripture-teaser{gap:10px;padding:13px}.women-scripture-icon{flex-basis:38px;width:38px;height:38px}}
 </style>
+<style id="selective-glass-accents">
+/* Subtle glass accents for the brand and header controls only. */
+.brand .logo {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.64);
+  background: linear-gradient(135deg, rgba(74,130,160,.45), rgba(36,77,104,.32));
+  box-shadow: 0 6px 20px rgba(36,77,104,.20), inset 0 1px 0 rgba(255,255,255,.36);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.brand .logo::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 13px;
+  pointer-events: none;
+  background: linear-gradient(145deg, rgba(255,255,255,.24), rgba(255,255,255,0) 58%);
+}
+.brand .logo svg { position: relative; z-index: 1; }
+.account-button {
+  background: linear-gradient(120deg, rgba(18,72,100,.55), rgba(69,142,162,.40));
+  border: 1px solid rgba(255,255,255,.78);
+  box-shadow: 0 5px 14px rgba(20,56,76,.16), inset 0 1px 0 rgba(255,255,255,.30);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.account-button:hover {
+  background: linear-gradient(120deg, rgba(18,72,100,.64), rgba(69,142,162,.50));
+}
+.profile-access {
+  background: rgba(255,254,250,.34);
+  border-color: rgba(255,255,255,.72);
+  box-shadow: 0 5px 14px rgba(29,63,78,.10), inset 0 1px 0 rgba(255,255,255,.52);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.language-toggle {
+  color: #fff;
+  background: linear-gradient(120deg, rgba(18,72,100,.55), rgba(69,142,162,.40));
+  border-color: rgba(255,255,255,.82);
+  box-shadow: 0 6px 16px rgba(20,56,76,.17), inset 0 1px 0 rgba(255,255,255,.46);
+  text-shadow: 0 1px 5px rgba(10,43,59,.5);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.language-toggle:hover {
+  color: #fff;
+  background: linear-gradient(120deg, rgba(18,72,100,.64), rgba(69,142,162,.50));
+}
+.language-toggle b { color: #ffe3a0; }
+</style>
 <style id="account-language-corners">
 /* Keep account actions and language control in opposite corners; position
    them explicitly for reliable rendering in both reading directions. */
@@ -450,7 +502,8 @@ html[dir="ltr"] .language-picker{right:0!important;left:auto!important}
  </section>
 </div>
 <script>
-let siteLanguage=localStorage.getItem('vahagita_language')||'he';
+const requestedLanguage=new URLSearchParams(location.search).get('lang');
+let siteLanguage=(requestedLanguage==='en'||requestedLanguage==='he')?requestedLanguage:(localStorage.getItem('vahagita_language')||'he');
 const EN={
  'ראשי':'Home','לימוד':'Study','רגע והגית':'Vahagita Moment','לגלות את ישוע · בקרוב':'Discover Jesus · soon','אתגרים':'Challenges','קהילה':'Community','הפרופיל שלי':'My profile','התחברות / הרשמה':'Sign in / Sign up',
  'לומדים · מבינים · זוכרים':'Learn · Understand · Remember','והגית לא מחליף את הספר הפיזי שלך — הוא מחזיר אותך אליו.':'Vahagita does not replace your physical Bible — it brings you back to it.',
@@ -546,7 +599,7 @@ function translateTextNodes(root=document.body){const walker=document.createTree
 function localizeAttributes(root=document.body){const attrs=['aria-label','aria-description','title','placeholder','label'];root.querySelectorAll('*').forEach(el=>attrs.forEach(attr=>{const value=el.getAttribute(attr);if(!value)return;const store='__heAttr_'+attr.replace(/[^a-z]/gi,'_');if(el[store]===undefined)el[store]=value;const source=String(el[store]).trim();el.setAttribute(attr,siteLanguage==='en'?(DEMO_EN[source]||EN[source]||el[store]):el[store]);}));}
 function renderFooter(){const en=siteLanguage==='en',brand=document.getElementById('footerBrand'),line=document.getElementById('footerLine');if(brand)brand.textContent=en?'Vahagita':'והגית';if(line)line.textContent=en?'Return to the Book · Study in Scripture · Grow deeper together':'חוזרים אל הספר · לומדים מתוך הכתובים · מעמיקים יחד'}
 function applyLanguage(){document.documentElement.lang=siteLanguage;document.documentElement.dir=siteLanguage==='en'?'ltr':'rtl';document.body.classList.toggle('lang-en',siteLanguage==='en');document.getElementById('languageToggle').innerHTML=siteLanguage==='en'?'English <b>עב</b>':'עברית <b>EN</b>';translateTextNodes();localizeAttributes();const fields={momentAnswer:siteLanguage==='en'?'You can answer briefly, or simply carry the question with you through the day…':'אפשר לענות בקצרה, או רק לקחת את השאלה איתך להמשך היום...',pfName:siteLanguage==='en'?'What should we call you?':'איך לקרוא לך?',bbText:siteLanguage==='en'?'What is on your heart?':'מה על ליבך?'};Object.entries(fields).forEach(([id,value])=>{const el=document.getElementById(id);if(el)el.placeholder=value});const initials=document.querySelector('.avatar-choice[data-avatar="initials"]');if(initials)initials.textContent=siteLanguage==='en'?'A':'א';[['initials','Initials','ראשי תיבות'],['🌿','Leaf','עלה'],['🕊️','Dove','יונה'],['📖','Book','ספר'],['✨','Light','אור']].forEach(a=>{const b=document.querySelector('.avatar-choice[data-avatar="'+a[0]+'"]');if(b)b.title=siteLanguage==='en'?a[1]:a[2]});renderMoment();renderProfile();renderStats();renderReadingPathTeaser();renderDailyChallengeCard();localizeDailyChallengeResult();if(document.getElementById('readingPath').classList.contains('active'))renderReadingPath();if(document.getElementById('dailyChallenge').classList.contains('active')){dailyChallengeItems=todayChallengeItems();if(document.getElementById('dailyChallengeResult').hidden)renderDailyChallengeQuestion();localizeDailyChallengeResult();};renderFooter();renderAccountZone();if(typeof cmRender==='function'&&CM.open)cmRender();if(typeof bbRender==='function'&&document.getElementById('community').classList.contains('active'))bbRender();localizeAttributes();if(window.refreshScriptureBackground)window.refreshScriptureBackground();}
-function toggleLanguage(){siteLanguage=siteLanguage==='he'?'en':'he';localStorage.setItem('vahagita_language',siteLanguage);applyLanguage()}
+function toggleLanguage(){siteLanguage=siteLanguage==='he'?'en':'he';localStorage.setItem('vahagita_language',siteLanguage);const url=new URL(location.href);url.searchParams.set('lang',siteLanguage);history.replaceState(null,'',url);applyLanguage()}
 const banks={
  john:{name:"בשורת יוחנן",qs:[
  {q:"מה היה האות הראשון שישוע עשה לפי בשורת יוחנן?",o:["ריפוי העיוור מלידה","הפיכת מים ליין בחתונה בקנה","האכלת חמשת אלפים איש","החייאת אלעזר"],a:1,ref:"יוחנן ב׳ 1–11",why:"יוחנן מתאר את הפיכת המים ליין בחתונה בקנה כאות הראשון שישוע עשה. הסיפור מסתיים בכך שתלמידיו האמינו בו.",hint:"האירוע התרחש במהלך חתונה בגליל."},
